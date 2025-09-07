@@ -168,33 +168,18 @@ class _PostScreenState extends State<PostScreen> {
                       context,
                       index,
                     ) {
-                      final m = docs[index].data();
-                      final createdAt = (m['createdAt'] as Timestamp?)
-                          ?.toDate();
+                      final post = PostModel.fromFirestore(docs[index]);
 
                       return PostComponent(
-                        username: (m['username'] ?? 'user') as String,
-                        timeAgo: formatTimeAgo(createdAt),
-                        text:
-                            (m['text'] ?? (m['content'] ?? ''))
-                                as String,
-                        replies:
-                            (m['replies'] ?? (m['comments'] ?? 0))
-                                as int,
-                        likes: (m['likes'] ?? 0) as int,
-                        isVerified:
-                            (m['isVerified'] ?? false) as bool,
-                        imageUrls:
-                            (m['imageUrls'] as List?)
-                                ?.map((e) => e.toString())
-                                .toList() ??
-                            const <String>[],
-                        likedByAvatars:
-                            (m['likedByAvatars'] as List?)
-                                ?.map((e) => e.toString())
-                                .toList() ??
-                            const <String>[],
-                        avatarUrl: (m['avatarUrl'] ?? '') as String,
+                        username: post.username,
+                        timeAgo: post.timeAgo,
+                        text: post.text,
+                        replies: post.replies,
+                        likes: post.likes,
+                        isVerified: post.isVerified,
+                        imageUrls: post.imageUrls,
+                        likedByAvatars: post.likedByAvatars,
+                        avatarUrl: post.avatarUrl,
                       );
                     }, childCount: docs.length),
                   );

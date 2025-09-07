@@ -9,6 +9,7 @@ class PostModel {
   final int replies;
   final int likes;
   final List<String> likedByAvatars;
+  final String avatarUrl;
 
   PostModel({
     required this.username,
@@ -19,6 +20,7 @@ class PostModel {
     required this.replies,
     required this.likes,
     required this.likedByAvatars,
+    required this.avatarUrl,
   });
 
   factory PostModel.fromFirestore(
@@ -33,12 +35,11 @@ class PostModel {
       isVerified: (m['isVerified'] ?? false) as bool,
       timeAgo: formatTimeAgo(dt),
       text: (m['text'] ?? (m['content'] ?? '')) as String,
-      imageUrls:
-          (m['imageUrls'] as List?)?.cast<String>() ?? const [],
-      replies: (m['replies'] ?? (m['comments'] ?? 0)) as int,
-      likes: (m['likes'] ?? 0) as int,
-      likedByAvatars:
-          (m['likedByAvatars'] as List?)?.cast<String>() ?? const [],
+      imageUrls: List<String>.from(m['imageUrls'] ?? []),
+      replies: ((m['replies'] ?? m['comments'] ?? 0) as num).toInt(),
+      likes: ((m['likes'] ?? 0) as num).toInt(),
+      likedByAvatars: List<String>.from(m['likedByAvatars'] ?? []),
+      avatarUrl: (m['avatarUrl'] ?? '') as String,
     );
   }
 }
